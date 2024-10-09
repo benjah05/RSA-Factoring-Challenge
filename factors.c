@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <unistd.h>
 #include <ctype.h>
 #include <math.h>
+#include <inttypes.h> /* for PRIu64*/
 /**
  * main - Factorize as many numbers as possible into
  * a product of two smaller numbers
@@ -14,7 +16,7 @@ int main(int argc, char *argv[])
 {
 	FILE *file;
 	char buffer[1024];
-	unsigned long long int i, num;
+	uint64_t i, num;
 
 	if (argc != 2)
 	{
@@ -29,12 +31,12 @@ int main(int argc, char *argv[])
 	}
 	while (fgets(buffer, sizeof(buffer), file) != NULL)
 	{
-		num = strtoull(buffer);
-		for (i = 2; i <= sqrt(num); i++)
+		num = strtoull(buffer, NULL, 10);
+		for (i = 2; i <= (uint64_t)sqrt(num); i++)
 		{
 			if (num % i == 0)
 			{
-				dprintf(STDOUT_FILENO, "%llu=%llu*%llu\n", num, num / i, i);
+				dprintf(STDOUT_FILENO, "%" PRIu64 "=%" PRIu64 "*%" PRIu64 "\n", num, num / i, i);
 				break;
 			}
 		}
